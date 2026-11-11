@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Civic Companion • Next-Gen Civic Governance MVP</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Outfit & Cinzel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            cinzel: ['Cinzel', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: radial-gradient(circle at top left, #1e1b4b, #0f172a, #020617);
+      color: #f8fafc;
+      min-height: 100vh;
+    }
+    
+    .glass-card {
+      background: rgba(30, 41, 59, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    
+    .gold-border {
+      border: 1.5px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .gold-glow:hover {
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
+    }
+
+    .pulse-ring {
+      animation: pulse-animation 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+
+    @keyframes pulse-animation {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(225, 29, 72, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+    }
+  </style>
+</head>
+<body class="p-2 md:p-6 pb-24">
+
+  <!-- TOP APP HEADER & BRANDING -->
+  <header class="max-w-7xl mx-auto mb-6 glass-card p-4 rounded-3xl gold-border flex flex-col md:flex-row items-center justify-between gap-4 shadow-2xl">
+    <div class="flex items-center space-x-3">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-700 flex items-center justify-center text-2xl shadow-lg border border-amber-300">
+        🏛️
+      </div>
+      <div>
+        <h1 class="text-xl md:text-2xl font-black font-cinzel text-amber-400 tracking-wide flex items-center gap-2">
+          <span>AI Civic Companion</span>
+          <span class="text-xs bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full border border-amber-500/40 font-sans font-bold">MVP Standalone</span>
+        </h1>
+        <p class="text-xs text-slate-400 font-medium">Smart Governance • Multi-Modal AI • 13 Societal Modules</p>
+      </div>
+    </div>
+
+    <!-- Navigation View Switcher -->
+    <div class="flex items-center space-x-1.5 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-700/60 overflow-x-auto max-w-full">
+      <button onclick="switchTab('modules')" id="btn-tab-modules" class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-amber-500 text-slate-950 shadow-md">
+        🗺️ 13 Modules
+      </button>
+      <button onclick="switchTab('report')" id="btn-tab-report" class="px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:bg-slate-800">
+        🎙️ Voice & AI Scan
+      </button>
+      <button onclick="switchTab('issues')" id="btn-tab-issues" class="px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:bg-slate-800">
+        📋 Live Tracking
+      </button>
+      <button onclick="switchTab('officer')" id="btn-tab-officer" class="px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:bg-slate-800">
+        👮 Officer Desk
+      </button>
+    </div>
+
+    <!-- Language Selector -->
+    <div class="flex items-center space-x-2 shrink-0">
+      <span class="text-xs text-slate-400 font-bold hidden sm:inline">Lang:</span>
+      <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-slate-900 border border-amber-500/30 text-amber-300 text-xs font-bold rounded-xl px-3 py-1.5 focus:outline-none focus:border-amber-400">
+        <optgroup label="Official 22 Languages (8th Schedule)">
+          <option value="Assamese">অসমীয়া (Assamese)</option>
+          <option value="Bengali">বাংলা (Bengali)</option>
+          <option value="Bodo">बड़ो (Bodo)</option>
+          <option value="Dogri">डोगरी (Dogri)</option>
+          <option value="Gujarati">ગુજરાતી (Gujarati)</option>
+          <option value="Hindi">हिंदी (Hindi)</option>
+          <option value="Kannada">ಕನ್ನಡ (Kannada)</option>
+          <option value="Kashmiri">कॉशुर (Kashmiri)</option>
+          <option value="Konkani">कोंकणी (Konkani)</option>
+          <option value="Maithili">मैथिली (Maithili)</option>
+          <option value="Malayalam">മലയാളം (Malayalam)</option>
+          <option value="Manipuri">মৈতৈলোন্ (Manipuri)</option>
+          <option value="Marathi">मराठी (Marathi)</option>
+          <option value="Nepali">नेपाली (Nepali)</option>
+          <option value="Odia">ଓଡ଼ିଆ (Odia)</option>
+          <option value="Punjabi">ਪੰਜਾਬੀ (Punjabi)</option>
+          <option value="Sanskrit">संस्कृतम् (Sanskrit)</option>
+          <option value="Santali">ᱥᱟᱱᱛᱟᱲᱤ (Santali)</option>
+          <option value="Sindhi">सिन्धी (Sindhi)</option>
+          <option value="Tamil">தமிழ் (Tamil)</option>
+          <option value="Telugu">తెలుగు (Telugu)</option>
+          <option value="Urdu">اردو (Urdu)</option>
+        </optgroup>
+        <optgroup label="National / Link Language">
+          <option value="English" selected>English (English)</option>
+        </optgroup>
+        <optgroup label="Other Regional Languages">
+          <option value="Bhojpuri">भोजपुरी (Bhojpuri)</option>
+          <option value="Rajasthani">राजस्थानी (Rajasthani)</option>
+          <option value="Chhattisgarhi">छत्तीसगढ़ी (Chhattisgarhi)</option>
+          <option value="Haryanvi">हरियाणवी (Haryanvi)</option>
+          <option value="Tulu">ತುಳು (Tulu)</option>
+          <option value="Kokborok">ককবরক (Kokborok)</option>
+          <option value="Mizo">Mizo ṭawng (Mizo)</option>
+          <option value="Khasi">Ka Ktien Khasi (Khasi)</option>
+          <option value="Garo">A·chik (Garo)</option>
+          <option value="Ladakhi">ལ་དྭགས་སྐད་ (Ladakhi)</option>
+        </optgroup>
+      </select>
+    </div>
+  </header>
+
+  <!-- MAIN MVP CONTENT WRAPPER -->
+  <main class="max-w-7xl mx-auto space-y-6">
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 1: ALL 13 MODULES EXPLORER -->
+    <!-- ========================================================================= -->
+    <section id="view-modules" class="space-y-6">
+      <div class="text-center space-y-2 max-w-2xl mx-auto">
+        <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold border border-amber-500/30">
+          Complete Societal Taxonomy
+        </span>
+        <h2 class="text-2xl md:text-3xl font-black font-cinzel text-white">Explore All 13 Governance & Civic Modules</h2>
+        <p class="text-xs md:text-sm text-slate-400">Click any module to view its full category taxonomy and lodge a targeted complaint.</p>
+      </div>
+
+      <!-- Modules Grid (13 Modules) -->
+      <div id="modules-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <!-- Generated Dynamically via JS -->
+      </div>
+
+      <!-- Selected Module Details Card -->
+      <div id="module-detail-card" class="hidden glass-card p-6 rounded-3xl gold-border shadow-2xl space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-700/60 pb-3">
+          <div class="flex items-center space-x-3">
+            <span id="detail-module-icon" class="text-3xl p-2.5 rounded-2xl bg-amber-500/20 border border-amber-500/40"></span>
+            <div>
+              <h3 id="detail-module-title" class="text-xl font-bold text-amber-400 font-cinzel"></h3>
+              <p id="detail-module-desc" class="text-xs text-slate-400"></p>
+            </div>
+          </div>
+          <button onclick="closeModuleDetail()" class="text-slate-400 hover:text-white bg-slate-800 p-2 rounded-xl">✕</button>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-amber-300">Subcategories & Grievance Topics:</h4>
+          <div id="detail-categories-list" class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-96 overflow-y-auto pr-2">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 2: MULTI-MODAL AI COMPLAINT FILING (Voice & Photo Scanner) -->
+    <!-- ========================================================================= -->
+    <section id="view-report" class="hidden max-w-3xl mx-auto space-y-6">
+      <div class="glass-card p-6 rounded-3xl gold-border shadow-2xl space-y-6">
+        <div class="text-center space-y-1">
+          <span class="px-3 py-1 rounded-full bg-rose-500/10 text-rose-400 text-xs font-bold border border-rose-500/30">
+            Multi-Modal AI Filing Engine
+          </span>
+          <h2 class="text-2xl font-black font-cinzel text-white">Voice & Photo AI Scanner</h2>
+          <p class="text-xs text-slate-400">Speak in your mother tongue or upload a photo to auto-detect issue, priority & department.</p>
+        </div>
+
+        <!-- Mode selector tabs -->
+        <div class="grid grid-cols-2 gap-3 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-700/60">
+          <button onclick="setReportMode('voice')" id="mode-btn-voice" class="py-2.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all">
+            🎙️ Voice AI Mode
+          </button>
+          <button onclick="setReportMode('photo')" id="mode-btn-photo" class="py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-800 transition-all">
+            📷 Photo AI Scanner
+          </button>
+        </div>
+
+        <!-- Voice Mode Container -->
+        <div id="report-mode-voice" class="p-6 bg-slate-900/60 rounded-2xl border border-slate-700/50 space-y-4 text-center">
+          <p class="text-xs text-slate-300 font-bold">Tap microphone to record spoken complaint in selected language</p>
+          
+          <button onclick="toggleRecording()" id="mic-button" class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-rose-600 to-amber-600 text-white flex items-center justify-center text-3xl shadow-xl hover:scale-105 transition-all">
+            🎙️
+          </button>
+
+          <p id="mic-status" class="text-xs text-slate-400 font-semibold">Click microphone to speak</p>
+
+          <!-- Simulated Audio Waveform -->
+          <div id="waveform" class="hidden flex items-center justify-center space-x-1 h-8 pt-2">
+            <div class="w-1.5 h-6 bg-rose-500 rounded-full animate-bounce"></div>
+            <div class="w-1.5 h-8 bg-amber-500 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+            <div class="w-1.5 h-4 bg-rose-400 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+            <div class="w-1.5 h-7 bg-amber-400 rounded-full animate-bounce [animation-delay:0.1s]"></div>
+            <div class="w-1.5 h-5 bg-rose-500 rounded-full animate-bounce [animation-delay:0.3s]"></div>
+          </div>
+
+          <!-- AI Transcription Output Box -->
+          <div id="ai-transcription-box" class="hidden text-left p-4 bg-slate-950 rounded-xl border border-amber-500/40 space-y-2">
+            <div class="flex items-center justify-between text-xs text-amber-400 font-bold">
+              <span>AI Speech Recognition Output:</span>
+              <span id="ai-lang-badge" class="bg-amber-500/20 px-2 py-0.5 rounded text-[10px]"></span>
+            </div>
+            <p id="transcription-text" class="text-xs text-slate-200 font-mono"></p>
+            <div class="pt-2 border-t border-slate-800 text-[11px] text-emerald-400 font-bold flex items-center gap-1">
+              <span>🤖 AI Classifier:</span>
+              <span id="ai-classified-category"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photo AI Mode Container -->
+        <div id="report-mode-photo" class="hidden p-6 bg-slate-900/60 rounded-2xl border border-slate-700/50 space-y-4 text-center">
+          <p class="text-xs text-slate-300 font-bold">Upload image evidence for Computer Vision AI object detection</p>
+
+          <label class="inline-flex items-center space-x-2 px-5 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-xs font-bold rounded-2xl cursor-pointer shadow-lg">
+            <span>📷 Choose Image File</span>
+            <input type="file" accept="image/*" onchange="handlePhotoUpload(event)" class="hidden">
+          </label>
+
+          <!-- Photo Preview & Vision Output -->
+          <div id="photo-preview-box" class="hidden text-left space-y-3 pt-2">
+            <div class="relative rounded-2xl overflow-hidden border border-purple-500/40">
+              <img id="uploaded-img" class="w-full h-48 object-cover" src="" alt="Evidence">
+              <div class="absolute top-2 right-2 bg-emerald-500 text-slate-950 font-black text-[10px] px-2 py-1 rounded-md shadow-md">
+                Confidence: 94.8%
+              </div>
+            </div>
+            <div class="p-3 bg-slate-950 rounded-xl border border-purple-500/30 text-xs text-slate-300 space-y-1">
+              <p class="font-bold text-purple-400">Object Detection Results:</p>
+              <p id="photo-detection-details" class="text-slate-300"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Fields -->
+        <form onsubmit="submitFormComplaint(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Target Module & Category:</label>
+            <select id="form-category-select" class="w-full bg-slate-950 border border-slate-700 text-xs text-slate-200 rounded-xl p-3 focus:outline-none focus:border-amber-400">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Grievance Description:</label>
+            <textarea id="form-description" rows="3" placeholder="Provide additional details or let AI generate summary..." class="w-full bg-slate-950 border border-slate-700 text-xs text-slate-200 rounded-xl p-3 focus:outline-none focus:border-amber-400"></textarea>
+          </div>
+
+          <div class="flex items-center justify-between pt-2">
+            <label class="flex items-center space-x-2 text-xs text-slate-300 cursor-pointer">
+              <input type="checkbox" id="form-anonymous" class="rounded bg-slate-900 border-slate-700 text-amber-500">
+              <span>Submit Anonymously</span>
+            </label>
+            <button type="submit" class="px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-xs rounded-2xl shadow-xl hover:scale-105 transition-all">
+              🚀 Submit Complaint
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 3: LIVE TRACKING & COMPLAINTS FEED -->
+    <!-- ========================================================================= -->
+    <section id="view-issues" class="hidden space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 glass-card p-4 rounded-2xl gold-border">
+        <div>
+          <h3 class="text-lg font-bold font-cinzel text-amber-400">Live Complaint Resolution Feed</h3>
+          <p class="text-xs text-slate-400">Real-time tracking of filed complaints, SLA timers & department routing</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <select id="filter-module-select" onchange="renderComplaintsFeed()" class="bg-slate-900 border border-slate-700 text-xs text-slate-300 rounded-xl px-3 py-1.5">
+            <option value="">All Modules</option>
+          </select>
+          <select id="filter-status-select" onchange="renderComplaintsFeed()" class="bg-slate-900 border border-slate-700 text-xs text-slate-300 rounded-xl px-3 py-1.5">
+            <option value="">All Statuses</option>
+            <option value="Submitted">Submitted</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="complaints-list" class="space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 4: GOVERNMENT OFFICER DASHBOARD -->
+    <!-- ========================================================================= -->
+    <section id="view-officer" class="hidden space-y-6">
+      <div class="glass-card p-6 rounded-3xl border border-indigo-500/40 shadow-2xl space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span class="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold border border-indigo-500/40">
+              Government Officer Portal
+            </span>
+            <h2 id="officer-dept-name" class="text-2xl font-black font-cinzel text-white pt-1">Anti-Corruption & Vigilance Directorate</h2>
+            <p class="text-xs text-slate-400">Officer-in-Charge: <strong id="officer-name" class="text-indigo-300">Director K. Singh</strong> • Multi-Department Resolution Queue</p>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <span id="officer-queue-count" class="px-4 py-2 bg-indigo-900/60 text-indigo-200 text-xs font-bold rounded-xl border border-indigo-500/40">
+              0 Pending Issues
+            </span>
+          </div>
+        </div>
+
+        <!-- Department Selector Tabs -->
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-2">Switch Department View:</label>
+          <div id="officer-dept-tabs" class="flex items-center gap-2 overflow-x-auto pb-2">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Department Complaint Queue -->
+      <div id="officer-queue-list" class="space-y-4">
+        <!-- Populated via JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // TAXONOMY DATA: ALL 13 MODULES & SUBCATEGORIES
+    // =========================================================================
+    const MODULES = [
+      {
+        id: 'corruption',
+        name: 'Anti-Corruption & Vigilance',
+        icon: '⚖️',
+        deptId: 'dept-vigilance',
+        deptName: 'Anti-Corruption Directorate',
+        color: 'from-rose-600 to-pink-700',
+        desc: 'Bribery, illegal commissions, fake docs, tender irregularities & recruitment fraud',
+        categories: [
+          'Bribery Demand by Office Staff',
+          'Official Misconduct / Service Denial',
+          'Illegal Commission / Extra Money Demand',
+          'Corruption in Government Schemes',
+          'Fake Government Documents',
+          'Tender / Contract Irregularity',
+          'Recruitment / Job Bribe',
+          'Police Misconduct',
+          'Land/Property Record Manipulation',
+          'Ration/Food Scheme Corruption',
+          'School/College Official Misconduct',
+          'Healthcare Service Corruption'
+        ]
+      },
+      {
+        id: 'unemployment',
+        name: 'Unemployment & Jobs',
+        icon: '💼',
+        deptId: 'dept-employment',
+        deptName: 'Skill Development & Employment Wing',
+        color: 'from-blue-600 to-indigo-700',
+        desc: 'Skill training, job vacancies, apprenticeships, resume assistance & job fairs',
+        categories: [
+          'Youth Skill Training Hub Request',
+          'Local Worker Placement Support',
+          'Job Vacancy Assistance',
+          'Government Job Scheme Information',
+          'Apprenticeship Request',
+          'Internship Opportunity Support',
+          'Resume/CV Assistance',
+          'Job Fair Request',
+          'Skill Certification Support',
+          'Daily Wage Worker Support',
+          'Migrant Worker Employment Support',
+          'Women Employment Support',
+          'Job Scam/Fraud Reporting',
+          'Career Guidance'
+        ]
+      },
+      {
+        id: 'waste',
+        name: 'Waste & Cleanliness',
+        icon: '🗑️',
+        deptId: 'dept-waste',
+        deptName: 'Sanitation & Solid Waste Board',
+        color: 'from-amber-600 to-yellow-600',
+        desc: 'Garbage collection, illegal dumping, waste burning, plastic & e-waste disposal',
+        categories: [
+          'Garbage Not Collected',
+          'Overflowing Garbage Bin',
+          'Illegal Dumping',
+          'Waste Burning',
+          'Plastic Waste Problem',
+          'E-Waste Disposal',
+          'Biomedical Waste Issue',
+          'Construction Waste',
+          'Drain/Gutter Waste',
+          'Public Toilet Cleanliness',
+          'Recycling Pickup Request',
+          'Stray Animal Waste Problem'
+        ]
+      },
+      {
+        id: 'water',
+        name: 'Water & Sanitation',
+        icon: '💧',
+        deptId: 'dept-water',
+        deptName: 'Water Supply & Sewerage Board',
+        color: 'from-cyan-600 to-blue-600',
+        desc: 'Water leaks, no supply, contaminated water, sewerage overflow & open drains',
+        categories: [
+          'Water Leakage',
+          'No Water Supply',
+          'Contaminated Water',
+          'Low Water Pressure',
+          'Broken Water Pipeline',
+          'Illegal Water Connection',
+          'Sewerage Overflow',
+          'Open Drain',
+          'Drainage Blockage',
+          'Rainwater Drainage Problem',
+          'Public Drinking Water Facility'
+        ]
+      },
+      {
+        id: 'roads',
+        name: 'Roads & Infrastructure',
+        icon: '🛣️',
+        deptId: 'dept-roads',
+        deptName: 'Roads & Civil Infrastructure Dept',
+        color: 'from-slate-600 to-stone-700',
+        desc: 'Potholes, damaged roads, broken footpaths, traffic signals & unsafe bridges',
+        categories: [
+          'Pothole Reporting',
+          'Damaged Road',
+          'Broken Footpath',
+          'Missing Road Sign',
+          'Damaged Traffic Signal',
+          'Broken Street Furniture',
+          'Unsafe Bridge',
+          'Roadside Obstruction',
+          'Construction Hazard',
+          'Open Manhole',
+          'Public-Space Safety Hazard'
+        ]
+      },
+      {
+        id: 'electricity',
+        name: 'Lighting & Electricity',
+        icon: '💡',
+        deptId: 'dept-electrical',
+        deptName: 'Electrical & Street Lighting Dept',
+        color: 'from-yellow-500 to-amber-600',
+        desc: 'Broken streetlights, dark areas, leaning poles, exposed wires & transformers',
+        categories: [
+          'Street Light Not Working',
+          'Dark/Unsafe Area',
+          'Broken Electric Pole',
+          'Exposed Electrical Wire',
+          'Transformer Problem',
+          'Illegal Electricity Connection',
+          'Power Infrastructure Hazard'
+        ]
+      },
+      {
+        id: 'traffic',
+        name: 'Traffic & Transport',
+        icon: '🚦',
+        deptId: 'dept-traffic',
+        deptName: 'Traffic & Enforcement Wing',
+        color: 'from-red-600 to-amber-600',
+        desc: 'Illegal parking, road congestion, dangerous driving & public bus service issues',
+        categories: [
+          'Illegal Parking',
+          'Traffic Signal Problem',
+          'Road Congestion',
+          'Dangerous Driving Reporting',
+          'Bus Stop Problem',
+          'Public Bus Service Issue',
+          'Auto/Taxi Overcharging',
+          'Missing Road Markings',
+          'School-Zone Traffic Problem'
+        ]
+      },
+      {
+        id: 'health',
+        name: 'Health & Medical Support',
+        icon: '🩺',
+        deptId: 'dept-health',
+        deptName: 'Public Health & Medical Services',
+        color: 'from-emerald-600 to-teal-600',
+        desc: 'Medical camps, emergency hospitals, ambulances, blood donors & medicines',
+        categories: [
+          'Medical Camp Request',
+          'Nearest Hospital/Clinic',
+          'Ambulance Assistance',
+          'Blood Donor Request',
+          'Medicine Availability',
+          'Public Health Hazard',
+          'Vaccination Information',
+          'Sanitation-Related Health Risk',
+          'Emergency Medical Location',
+          'Elderly Health Assistance'
+        ]
+      },
+      {
+        id: 'safety',
+        name: 'Women & Child Safety',
+        icon: '🛡️',
+        deptId: 'dept-safety',
+        deptName: 'Women & Child Safety Cell',
+        color: 'from-purple-600 to-pink-600',
+        desc: 'Unsafe public areas, street harassment, missing children & child welfare',
+        categories: [
+          'Unsafe Public Place',
+          'Street Harassment Reporting',
+          'Missing Child Assistance',
+          'Child Labour Reporting',
+          'School Safety Issue',
+          'Women Safety Location',
+          'Domestic Support Referral',
+          'Child Welfare Assistance'
+        ]
+      },
+      {
+        id: 'education',
+        name: 'Education & Facilities',
+        icon: '🎓',
+        deptId: 'dept-education',
+        deptName: 'Education & School Welfare Dept',
+        color: 'from-indigo-600 to-purple-600',
+        desc: 'School infrastructure, teacher issues, scholarships & digital education support',
+        categories: [
+          'School Infrastructure Problem',
+          'Teacher/Staff Issue',
+          'Missing School Facilities',
+          'Scholarship Information',
+          'Student Skill Training',
+          'Digital Education Support',
+          'Dropout Assistance',
+          'School Transport Problem'
+        ]
+      },
+      {
+        id: 'poverty',
+        name: 'Poverty & Relief',
+        icon: '🍲',
+        deptId: 'dept-poverty',
+        deptName: 'Poverty Alleviation Cell',
+        color: 'from-yellow-600 to-amber-700',
+        desc: 'Homelessness assistance, food/hunger support, malnutrition & welfare schemes',
+        categories: [
+          'Homelessness Assistance',
+          'Food/Hunger Support',
+          'Malnutrition Reporting',
+          'Basic Necessity Assistance',
+          'Financial Distress Support',
+          'Low-Income Family Support',
+          'Beggar Rehabilitation Support',
+          'Daily Wage Worker Assistance',
+          'Government Welfare Scheme Assistance'
+        ]
+      },
+      {
+        id: 'environment',
+        name: 'Environment Shield',
+        icon: '🌿',
+        deptId: 'dept-forest',
+        deptName: 'Environment & Forest Protection Dept',
+        color: 'from-emerald-700 to-green-800',
+        desc: 'Illegal tree cutting, deforestation, air/water pollution & green space loss',
+        categories: [
+          'Illegal Tree Cutting',
+          'Deforestation Reporting',
+          'Air Pollution',
+          'Water Pollution',
+          'Noise Pollution',
+          'Illegal Mining',
+          'Industrial Pollution',
+          'Burning of Waste',
+          'Loss of Green Space',
+          'Wildlife/Animal Welfare'
+        ]
+      },
+      {
+        id: 'emergency',
+        name: 'Public Safety & Emergency',
+        icon: '🚨',
+        deptId: 'dept-emergency',
+        deptName: 'Emergency Response & Disaster Mgmt',
+        color: 'from-red-700 to-rose-900',
+        desc: 'Fire emergency, accidents, building safety hazards, floods & landslides',
+        categories: [
+          'Fire Emergency',
+          'Accident Reporting',
+          'Building Safety Hazard',
+          'Flood Reporting',
+          'Landslide Reporting',
+          'Fallen Tree'
+        ]
+      }
+    ];
+
+    // Sample Active Complaints
+    let complaintsStore = [
+      {
+        id: 'CMP-2026-901',
+        moduleId: 'corruption',
+        category: 'Bribery Demand by Office Staff',
+        description: 'Revenue clerk at Ward 12 office demanded ₹2,500 extra money for issuing property khata certificate.',
+        reporterName: 'Anita Deshmukh',
+        status: 'In Progress',
+        priority: 'High',
+        deptId: 'dept-vigilance',
+        deptName: 'Anti-Corruption Directorate',
+        ward: 'Ward 12',
+        createdAt: new Date(Date.now() - 5 * 3600 * 1000).toISOString(),
+        slaDeadline: new Date(Date.now() + 19 * 3600 * 1000).toISOString(),
+        upvotes: 14
+      },
+      {
+        id: 'CMP-2026-842',
+        moduleId: 'roads',
+        category: 'Pothole Reporting',
+        description: 'Deep crater pothole near University main entrance road causing two-wheeler skids during evening traffic.',
+        reporterName: 'Rahul Kumar',
+        status: 'In Progress',
+        priority: 'High',
+        deptId: 'dept-roads',
+        deptName: 'Roads & Civil Infrastructure Dept',
+        ward: 'Ward 8',
+        createdAt: new Date(Date.now() - 12 * 3600 * 1000).toISOString(),
+        slaDeadline: new Date(Date.now() + 12 * 3600 * 1000).toISOString(),
+        upvotes: 28
+      },
+      {
+        id: 'CMP-2026-731',
+        moduleId: 'unemployment',
+        category: 'Youth Skill Training Hub Request',
+        description: 'Request to set up PMKVY vocational coding and EV repair training batch for 45 local youth at Ward 12 community center.',
+        reporterName: 'Suresh Patil',
+        status: 'Submitted',
+        priority: 'Medium',
+        deptId: 'dept-employment',
+        deptName: 'Skill Development & Employment Wing',
+        ward: 'Ward 12',
+        createdAt: new Date(Date.now() - 2 * 3600 * 1000).toISOString(),
+        slaDeadline: new Date(Date.now() + 46 * 3600 * 1000).toISOString(),
+        upvotes: 9
+      },
+      {
+        id: 'CMP-2026-612',
+        moduleId: 'emergency',
+        category: 'Fallen Tree',
+        description: 'Large banyan tree branch snapped during rainstorm blocking two lanes of Main Highway near market circle.',
+        reporterName: 'Kavita Reddy',
+        status: 'Resolved',
+        priority: 'High',
+        deptId: 'dept-emergency',
+        deptName: 'Emergency Response & Disaster Mgmt',
+        ward: 'Ward 3',
+        createdAt: new Date(Date.now() - 24 * 3600 * 1000).toISOString(),
+        slaDeadline: new Date(Date.now() - 18 * 3600 * 1000).toISOString(),
+        upvotes: 35
+      }
+    ];
+
+    let currentLanguage = 'English';
+    let currentReportMode = 'voice';
+    let isRecording = false;
+    let selectedOfficerDeptId = 'dept-vigilance';
+
+    // Initialize UI on load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderModulesGrid();
+      populateFormCategorySelect();
+      renderComplaintsFeed();
+      renderOfficerDashboard();
+    });
+
+    // Navigation Switcher
+    function switchTab(tabId) {
+      ['modules', 'report', 'issues', 'officer'].forEach(t => {
+        document.getElementById(`view-${t}`).classList.add('hidden');
+        const btn = document.getElementById(`btn-tab-${t}`);
+        if (t === tabId) {
+          btn.classList.remove('text-slate-300', 'hover:bg-slate-800');
+          btn.classList.add('bg-amber-500', 'text-slate-950', 'shadow-md');
+        } else {
+          btn.classList.add('text-slate-300', 'hover:bg-slate-800');
+          btn.classList.remove('bg-amber-500', 'text-slate-950', 'shadow-md');
+        }
+      });
+      document.getElementById(`view-${tabId}`).classList.remove('hidden');
+    }
+
+    // Render Modules Grid
+    function renderModulesGrid() {
+      const container = document.getElementById('modules-grid');
+      container.innerHTML = MODULES.map(m => `
+        <div onclick="openModuleDetail('${m.id}')" class="glass-card p-5 rounded-3xl gold-border gold-glow cursor-pointer transition-all hover:scale-[1.02] flex flex-col justify-between space-y-3 group">
+          <div class="flex items-start justify-between">
+            <span class="text-3xl p-3 rounded-2xl bg-gradient-to-tr ${m.color} text-white shadow-lg border border-white/20">${m.icon}</span>
+            <span class="text-[10px] font-bold px-2 py-1 bg-slate-800/80 text-amber-300 rounded-lg border border-amber-500/30">${m.categories.length} Topics</span>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-white group-hover:text-amber-400 transition-colors font-cinzel">${m.name}</h3>
+            <p class="text-xs text-slate-400 mt-1 line-clamp-2">${m.desc}</p>
+          </div>
+          <div class="pt-2 border-t border-slate-700/50 flex items-center justify-between text-[11px] text-slate-400">
+            <span>Dept: <strong class="text-slate-200">${m.deptName.split(' ')[0]}</strong></span>
+            <span class="text-amber-400 font-bold group-hover:translate-x-1 transition-transform">Explore →</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Open Module Detail Card
+    function openModuleDetail(moduleId) {
+      const mod = MODULES.find(m => m.id === moduleId);
+      if (!mod) return;
+
+      document.getElementById('detail-module-icon').innerText = mod.icon;
+      document.getElementById('detail-module-title').innerText = mod.name;
+      document.getElementById('detail-module-desc').innerText = `${mod.desc} • Assigned to ${mod.deptName}`;
+
+      const listContainer = document.getElementById('detail-categories-list');
+      listContainer.innerHTML = mod.categories.map(cat => `
+        <div onclick="selectCategoryForReport('${mod.id}', '${cat}')" class="p-3 bg-slate-900/80 rounded-2xl border border-slate-700/70 hover:border-amber-400/60 hover:bg-slate-800 transition-all cursor-pointer flex items-center justify-between group">
+          <div class="flex items-center space-x-2">
+            <span class="text-amber-400 font-bold text-xs">•</span>
+            <span class="text-xs font-semibold text-slate-200 group-hover:text-amber-300">${cat}</span>
+          </div>
+          <span class="text-[10px] text-amber-500 font-bold px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30">Report</span>
+        </div>
+      `).join('');
+
+      document.getElementById('module-detail-card').classList.remove('hidden');
+      document.getElementById('module-detail-card').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeModuleDetail() {
+      document.getElementById('module-detail-card').classList.add('hidden');
+    }
+
+    function selectCategoryForReport(moduleId, catName) {
+      switchTab('report');
+      const select = document.getElementById('form-category-select');
+      for (let i = 0; i < select.options.length; i++) {
+        if (select.options[i].text.includes(catName)) {
+          select.selectedIndex = i;
+          break;
+        }
+      }
+    }
+
+    // Populate Category Select Dropdown
+    function populateFormCategorySelect() {
+      const select = document.getElementById('form-category-select');
+      const filterSelect = document.getElementById('filter-module-select');
+      
+      let html = '';
+      let filterHtml = '<option value="">All Modules</option>';
+
+      MODULES.forEach(m => {
+        filterHtml += `<option value="${m.id}">${m.icon} ${m.name}</option>`;
+        html += `<optgroup label="${m.icon} ${m.name}">`;
+        m.categories.forEach(c => {
+          html += `<option value="${m.id}:::${c}">${c}</option>`;
+        });
+        html += `</optgroup>`;
+      });
+
+      select.innerHTML = html;
+      filterSelect.innerHTML = filterHtml;
+    }
+
+    // Report Mode Switcher
+    function setReportMode(mode) {
+      currentReportMode = mode;
+      if (mode === 'voice') {
+        document.getElementById('report-mode-voice').classList.remove('hidden');
+        document.getElementById('report-mode-photo').classList.add('hidden');
+        document.getElementById('mode-btn-voice').className = 'py-2.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition-all';
+        document.getElementById('mode-btn-photo').className = 'py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-800 transition-all';
+      } else {
+        document.getElementById('report-mode-voice').classList.add('hidden');
+        document.getElementById('report-mode-photo').classList.remove('hidden');
+        document.getElementById('mode-btn-photo').className = 'py-2.5 rounded-xl text-xs font-bold bg-purple-600 text-white shadow-md transition-all';
+        document.getElementById('mode-btn-voice').className = 'py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-800 transition-all';
+      }
+    }
+
+    // Toggle Simulated Voice Recording
+    function toggleRecording() {
+      const micBtn = document.getElementById('mic-button');
+      const statusText = document.getElementById('mic-status');
+      const waveform = document.getElementById('waveform');
+      const outputBox = document.getElementById('ai-transcription-box');
+
+      if (!isRecording) {
+        isRecording = true;
+        micBtn.classList.add('pulse-ring');
+        statusText.innerText = `Recording spoken complaint in ${currentLanguage}... Speak clearly now.`;
+        statusText.className = 'text-xs text-rose-400 font-bold animate-pulse';
+        waveform.classList.remove('hidden');
+        outputBox.classList.add('hidden');
+
+        setTimeout(() => {
+          isRecording = false;
+          micBtn.classList.remove('pulse-ring');
+          statusText.innerText = 'Voice transcription and AI classification complete!';
+          statusText.className = 'text-xs text-emerald-400 font-bold';
+          waveform.classList.add('hidden');
+          outputBox.classList.remove('hidden');
+
+          const sampleTranscriptions = {
+            English: 'Government office clerk in Ward 12 is asking for 2000 rupees extra cash bribe to issue trade license.',
+            Kannada: 'ನಮ್ಮ ಲೇಔಟ್‌ನಲ್ಲಿ ಬೀದಿ ದೀಪಗಳು ಕೆಲಸ ಮಾಡುತ್ತಿಲ್ಲ ಮತ್ತು ರಾತ್ರಿ ವೇಳೆ ಕತ್ತಲೆಯಾಗಿದೆ.',
+            Hindi: 'हमारे क्षेत्र में मुख्य पानी की पाइपलाइन टूट गई है और बहुत सारा पानी बर्बाद हो रहा है।',
+            Telugu: 'మా వార్డులో చెత్త పేరుకుపోయింది మరియు దుర్వాసనే వస్తోంది.'
+          };
+
+          const text = sampleTranscriptions[currentLanguage] || sampleTranscriptions['English'];
+          document.getElementById('transcription-text').innerText = `"${text}"`;
+          document.getElementById('ai-lang-badge').innerText = currentLanguage;
+          document.getElementById('ai-classified-category').innerText = 'Anti-Corruption • Bribery Demand by Office Staff (SLA: 12 Hours)';
+          document.getElementById('form-description').value = `[AI Speech Transcribed in ${currentLanguage}]: "${text}"`;
+        }, 3000);
+      } else {
+        isRecording = false;
+        micBtn.classList.remove('pulse-ring');
+        statusText.innerText = 'Recording cancelled.';
+        waveform.classList.add('hidden');
+      }
+    }
+
+    // Photo Upload Simulation
+    function handlePhotoUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const url = URL.createObjectURL(file);
+        document.getElementById('uploaded-img').src = url;
+        document.getElementById('photo-preview-box').classList.remove('hidden');
+        document.getElementById('photo-detection-details').innerText = 'AI Object Detection identified high-severity infrastructure hazard / pothole damage on asphalt road surface. Auto-routed to Roads & Civil Infrastructure Dept.';
+        document.getElementById('form-description').value = '[AI Photo Detection]: Computer vision identified pothole / road hazard with 94.8% confidence.';
+      }
+    }
+
+    // Form Submit Complaint
+    function submitFormComplaint(e) {
+      e.preventDefault();
+      const val = document.getElementById('form-category-select').value;
+      const [modId, catName] = val.split(':::');
+      const mod = MODULES.find(m => m.id === modId) || MODULES[0];
+      const desc = document.getElementById('form-description').value || 'Citizen complaint submitted via AI Civic Companion.';
+      const isAnon = document.getElementById('form-anonymous').checked;
+
+      const newCmp = {
+        id: `CMP-2026-${Math.floor(100 + Math.random() * 900)}`,
+        moduleId: mod.id,
+        category: catName,
+        description: desc,
+        reporterName: isAnon ? 'Anonymous Citizen' : 'Anita Deshmukh',
+        status: 'Submitted',
+        priority: 'High',
+        deptId: mod.deptId,
+        deptName: mod.deptName,
+        ward: 'Ward 12',
+        createdAt: new Date().toISOString(),
+        slaDeadline: new Date(Date.now() + 24 * 3600 * 1000).toISOString(),
+        upvotes: 1
+      };
+
+      complaintsStore.unshift(newCmp);
+      alert(`✅ Complaint ${newCmp.id} submitted successfully! Auto-assigned to ${newCmp.deptName}.`);
+      document.getElementById('form-description').value = '';
+      switchTab('issues');
+      renderComplaintsFeed();
+      renderOfficerDashboard();
+    }
+
+    // Render Complaints Feed
+    function renderComplaintsFeed() {
+      const modFilter = document.getElementById('filter-module-select').value;
+      const statusFilter = document.getElementById('filter-status-select').value;
+
+      let list = complaintsStore.filter(c => {
+        if (modFilter && c.moduleId !== modFilter) return false;
+        if (statusFilter && c.status !== statusFilter) return false;
+        return true;
+      });
+
+      const container = document.getElementById('complaints-list');
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="glass-card p-8 rounded-3xl text-center space-y-2 text-slate-400">
+            <p class="text-2xl">📭</p>
+            <p class="text-xs font-bold">No complaints match the selected filter.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(c => `
+        <div class="glass-card p-5 rounded-3xl gold-border space-y-3 shadow-lg">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="flex items-center space-x-2">
+              <span class="font-mono text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/30">${c.id}</span>
+              <span class="text-xs font-bold text-slate-200">${c.category}</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${
+                c.status === 'Resolved' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' :
+                c.status === 'In Progress' ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40' :
+                'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+              }">${c.status}</span>
+              <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40">${c.priority} Priority</span>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-300 leading-relaxed">${c.description}</p>
+
+          <div class="pt-3 border-t border-slate-700/60 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
+            <div class="flex items-center space-x-3">
+              <span>👤 ${c.reporterName}</span>
+              <span>📍 ${c.ward}</span>
+              <span>🏢 <strong class="text-slate-300">${c.deptName}</strong></span>
+            </div>
+            <div class="flex items-center space-x-3">
+              <button onclick="upvoteComplaint('${c.id}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded-lg font-bold border border-slate-700 flex items-center space-x-1">
+                <span>👍 Confirm (${c.upvotes})</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function upvoteComplaint(id) {
+      const cmp = complaintsStore.find(c => c.id === id);
+      if (cmp) {
+        cmp.upvotes += 1;
+        renderComplaintsFeed();
+      }
+    }
+
+    // Government Officer Dashboard Render
+    function renderOfficerDashboard() {
+      const mod = MODULES.find(m => m.deptId === selectedOfficerDeptId) || MODULES[0];
+      
+      document.getElementById('officer-dept-name').innerText = mod.deptName;
+      document.getElementById('officer-name').innerText = `Officer Queue (${mod.name})`;
+
+      // Department Tab Selector
+      const tabContainer = document.getElementById('officer-dept-tabs');
+      tabContainer.innerHTML = MODULES.map(m => `
+        <button onclick="switchOfficerDept('${m.deptId}')" class="px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all ${
+          selectedOfficerDeptId === m.deptId ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-900 text-slate-400 hover:bg-slate-800'
+        }">
+          ${m.icon} ${m.name.split(' ')[0]}
+        </button>
+      `).join('');
+
+      const deptComplaints = complaintsStore.filter(c => c.deptId === selectedOfficerDeptId);
+      document.getElementById('officer-queue-count').innerText = `${deptComplaints.length} Active Queue Issues`;
+
+      const listContainer = document.getElementById('officer-queue-list');
+      if (deptComplaints.length === 0) {
+        listContainer.innerHTML = `
+          <div class="glass-card p-8 rounded-3xl text-center space-y-2 text-slate-400">
+            <p class="text-2xl">🎉</p>
+            <p class="text-xs font-bold">No active grievances pending for ${mod.deptName}.</p>
+          </div>
+        `;
+        return;
+      }
+
+      listContainer.innerHTML = deptComplaints.map(c => `
+        <div class="glass-card p-5 rounded-3xl border border-indigo-500/30 space-y-3 shadow-lg">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="font-mono text-xs font-bold text-indigo-300 bg-indigo-500/20 px-2 py-0.5 rounded border border-indigo-500/40">${c.id}</span>
+              <span class="text-xs font-bold text-white">${c.category}</span>
+            </div>
+            <span class="text-xs font-bold text-amber-400">Status: ${c.status}</span>
+          </div>
+
+          <p class="text-xs text-slate-300">${c.description}</p>
+
+          <div class="pt-3 border-t border-slate-700/50 flex items-center justify-between">
+            <span class="text-[11px] text-slate-400">Reporter: ${c.reporterName} • ${c.ward}</span>
+            <div class="flex items-center space-x-2">
+              ${c.status !== 'In Progress' && c.status !== 'Resolved' ? `
+                <button onclick="updateStatusByOfficer('${c.id}', 'In Progress')" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow">
+                  ⚙️ Mark In Progress
+                </button>
+              ` : ''}
+              ${c.status !== 'Resolved' ? `
+                <button onclick="updateStatusByOfficer('${c.id}', 'Resolved')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow">
+                  ✅ Mark Resolved
+                </button>
+              ` : '<span class="text-xs text-emerald-400 font-bold">Resolved ✓</span>'}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function switchOfficerDept(deptId) {
+      selectedOfficerDeptId = deptId;
+      renderOfficerDashboard();
+    }
+
+    function updateStatusByOfficer(id, status) {
+      const cmp = complaintsStore.find(c => c.id === id);
+      if (cmp) {
+        cmp.status = status;
+        alert(`Status for ${id} updated to ${status}!`);
+        renderOfficerDashboard();
+        renderComplaintsFeed();
+      }
+    }
+
+    function changeLanguage(lang) {
+      currentLanguage = lang;
+      alert(`🌐 Language switched to ${lang}. Voice AI speech recognition and interface updated.`);
+    }
+  </script>
+</body>
+</html>
